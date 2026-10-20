@@ -1,195 +1,275 @@
-#[Instrucciones en Español para Grupo A y Grupo B](#instrucciones-para-utilizar-esta-plantilla).
+# 🛠️ Tool Store Management
 
-#[Instructions in English for Group I](#instructions-to-use-this-template).
+A full-stack .NET application for managing a tool store. Customers can **buy**, **rent** and **send tools for repair**, and the store can publish **discount offers** on its catalogue.
 
-# Instrucciones para utilizar esta plantilla.
+> 🎓 **Academic team project.** Built by a team of four students for **Software Engineering II** (*Ingeniería del Software II*), 3rd year of the **Bachelor's Degree in Computer Engineering** (*Grado en Ingeniería Informática*) at the **University of Castilla-La Mancha (UCLM)**, academic year 2025/2026.
+>
+> 📦 Original repository: <https://github.com/ISII-2526-GrupoA-TheHookahMasters/ISII2526TheHookahMasterss>
+>
+> This repository is a copy of the original, kept for portfolio purposes. The full commit history is preserved on the `development` branch.
 
-## 1. Cree la organización 
+---
 
-- Cree la organización para su equipo con el nombre **ISII-2526-GrupoX-Team**, donde GrupoX puede ser GrupoA o GrupoB siguiendo las instrucciones disponibles en:  
-[Create an organization](https://docs.github.com/en/organizations/collaborating-with-groups-in-organizations/creating-a-new-organization-from-scratch).
+## 📋 Table of Contents
 
-- Establezca que dicha organización pertenece a su **cuenta personal**. 
+- [Overview](#-overview)
+- [Features](#-features)
+- [Tech Stack](#-tech-stack)
+- [Architecture](#-architecture)
+- [Domain Model](#-domain-model)
+- [Project Structure](#-project-structure)
+- [Getting Started](#-getting-started)
+- [API Documentation](#-api-documentation)
+- [Development Methodology](#-development-methodology)
+- [Team](#-team)
+- [License](#-license)
 
+---
 
-### 1.1 Añada un equipo a su organización
+## 🔎 Overview
 
-Siga las instrucciones para crear el equipo [Creating an organization team](https://docs.github.com/en/organizations/organizing-members-into-teams/creating-a-team)
+The system models a tool shop with a catalogue of tools, each linked to a manufacturer. Registered users go through four business processes (use cases), and each one follows the same flow:
 
+1. **Select** tools from the catalogue (with filters).
+2. **Create** the operation: fill in the details, choose a payment method and confirm.
+3. **View the details** of the operation they just created.
 
-### 1.2 Añada miembros al equipo de su organización
+Each use case was designed and implemented end-to-end, from the REST API to the Blazor UI, along with its tests.
 
-Siga las instrucciones para añadir miembros [Adding organization members to a team](https://docs.github.com/en/organizations/organizing-members-into-teams/adding-organization-members-to-a-team)
+---
 
+## ✨ Features
 
-## 2. Crear el proyecto
+| Use case | Description |
+|---|---|
+| 🛒 **Purchase** (*Compra*) | Buy one or more tools, with quantities, a shipping address and a payment method. |
+| 📅 **Rental** (*Alquiler*) | Rent tools for a date range. The rental period and total price are calculated from the start and end dates. |
+| 🏷️ **Offers** (*Oferta*) | Create time-limited discount offers on a set of tools (a percentage per tool), aimed at members or customers. |
+| 🔧 **Repair** (*Reparación*) | Send tools for repair, with drop-off and pick-up dates, a description of the problem and a price per item. |
+| 🏭 **Catalogue** | Tools (name, material, price, repair time) and their manufacturers. |
+| 🔐 **Authentication** | User registration, login and account management with ASP.NET Core Identity (including 2FA support). |
 
-Cree su proyecto con el nombre ISII2526TeamName utilizando la plantilla disponible en: [Plantilla](https://github.com/orgs/Ingenieria-del-Software-II-ESIIAB/projects/14/views/1)
+Available payment methods: **credit card**, **PayPal** and **cash**.
 
-- ADVERTENCIA: el nombre del proyecto NO PUEDE CONTENER ESPACIOS NI CARACTERES NO ALFABÉTICOS
-- Establezca que **el propietario es la organización que acabas de crear.**
-- Establezca la visibilidad (visibility) **como pública**. [establece la visibilidad](https://docs.github.com/en/issues/planning-and-tracking-with-projects/managing-your-project/managing-visibility-of-your-projects#changing-project-visibility)
+---
 
+## 🧰 Tech Stack
 
-## 3. Cree el repositorio
+**Backend**
+- C# / .NET 8
+- ASP.NET Core Web API
+- Entity Framework Core 8 (code-first, migrations)
+- SQL Server (LocalDB) · SQLite (in-memory, for testing) · Azure SQL
+- ASP.NET Core Identity (with roles)
+- Swagger / OpenAPI (Swashbuckle) · NSwag (client generation)
 
-Cree el repositorio de su equipo con el nombre **ISII2526TeamName** utilizando esta plantilla: [Plantilla](https://github.com/Ingenieria-del-Software-II-ESIIAB/SEII-IPO-template)
-- Siga las instrucciones disponibles en:  
-[Create a repository from a template](https://docs.github.com/es/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template#creating-a-repository-from-a-template).
-- Establezca que el **propietario (owner) es la organización que acaba de crear**.
-- Establezca la visibilidad (visibility) **como pública**.
-- Enlace el repositorio con el proyecto creado antes [Adding your project to a repository](https://docs.github.com/en/issues/planning-and-tracking-with-projects/managing-your-project/adding-your-project-to-a-repository)
+**Frontend**
+- Blazor Web App (Razor components)
+- .NET MAUI Blazor Hybrid (cross-platform client: Android, iOS, macOS, Windows)
+- Bootstrap
 
-## 4. Configure el repositorio de su equipo.
+**Tooling and process**
+- Unit and integration tests (`test/` project)
+- GitHub Actions (CI)
+- GitHub Projects (Scrum board, sprints, issues)
+- Git flow with feature branches and pull requests
 
-### 4.1. En la rama development modificar el archivo `info.yml`.
+---
 
-```yaml
-project:
-  name: 'ISII-2526-GrupoX-Team'
-  owner: 'GrupoX'
-  teamId: 'Team'
-  identities: {}
-  notifications:
-    email: 'member1@alu.uclm.es,member2@alu.uclm.es,member3@alu.uclm.es,member4@alu.uclm.es'
-  members:
-    member1:
-      name: 'Name1'
-      surname: 'Surname1' 
-      githubUsername: 'Name1gitUserName1'
-    member2:
-      name: 'Name2'
-      surname: 'Surname2' 
-      githubUsername: 'Name1gitUserName2'
-    member3:
-      name: 'Name3'
-      surname: 'Surname3' 
-      githubUsername: 'Name1gitUserName3'
-    member4:
-      name: 'Name4'
-      surname: 'Surname4' 
-      githubUsername: 'Name1gitUserName4'
+## 🏗️ Architecture
+
+```
+┌──────────────────────┐      ┌──────────────────────┐
+│  AppForSEII2526.Web  │      │ AppForSEII2526.Maui  │
+│   (Blazor Web App)   │      │ (Blazor Hybrid app)  │
+└──────────┬───────────┘      └──────────┬───────────┘
+           │   HTTP / REST (NSwag-generated client)
+           └──────────────┬──────────────┘
+                          ▼
+              ┌──────────────────────┐
+              │  AppForSEII2526.API  │
+              │ ASP.NET Core Web API │
+              │  Controllers · DTOs  │
+              └──────────┬───────────┘
+                         │ EF Core
+                         ▼
+              ┌──────────────────────┐
+              │ SQL Server / SQLite  │
+              └──────────────────────┘
 ```
 
-- Donde, GrupoX puede ser GrupoA, GrupoB, o GrupoI, y Team es el nombre del equipo
-    > Por ejemplo, el equipo "TheLeaders" matriculado en el GrupoI sería:
-    >```yaml
-    >name: 'ISII-2526-GrupoI-TheLeaders'
-    >owner: 'GrupoI'
-    >teamId: 'TheLeaders'
-    >```
+- **API**: REST controllers per use case (`CompraController`, `AlquilarController`, `OfertaController`, `ReparacionController`, `HerramientaController`, `FabricanteController`). DTOs separate the API contract from the domain entities.
+- **Web**: Blazor pages per use case (`Select…` → `Create…` → `Detail…`). State containers keep the user's selection across pages.
+- **The database provider** is chosen at runtime through the `DBConnection2Use` environment variable (`SQLite`, `AzureSQL`, or LocalDB by default).
 
-- Sustituir los datos de cada memberN por los del miembro real.
-- Si el número de miembros es 3 entonces, eliminar member4 de la sección `members`.
-- Modificar la cadena de `notifications.email` para que contengan sólo los correos @alu.uclm.es de todos los miembros separados por comas y sin espacios.
-- Los githubUsername tienen que existir en GitHub.
+---
 
-### 4.2. Unir el proyecto a la asignatura auditada por Bluejay.
-- Cree la rama **main** utilizando development como fuente [como crear una rama](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-and-deleting-branches-within-your-repository#creating-a-branch-via-the-branches-overview)
-- Accede a [join.bluejay.governify.io](https://join.bluejay.governify.io).
-- Añade la **URL del repositorio** de GitHub. Por ejemplo, la url de este repositorio es "https://github.com/Ingenieria-del-Software-II-ESIIAB/SEII-IPO-template"
-- Click en **CHECK**. Si ha dado error revisa la [sintaxis](https://www.yamllint.com/) del info.yml.
-- **Selecciona el curso** al que te quieres unir (UCLM-ISII-2526) y especifica el código que te dará tu profesor.
-- Click en **JOIN**.
-- En caso de que haya algún otro problema al configurar Bluejay, el equipo de soporte está disponible en [un canal de Gitter dedicado](https://app.gitter.im/#/room/!VTAnLfNgxrEdydQgWd:gitter.im).
+## 🗂️ Domain Model
 
+```mermaid
+classDiagram
+    direction LR
+    class ApplicationUser {
+        Nombre
+        Apellido
+        Telefono
+        CorreoElectronico
+    }
+    class Fabricante {
+        Id
+        Nombre
+    }
+    class Herramienta {
+        Id
+        Nombre
+        Material
+        Precio
+        TiempoReparacion
+    }
+    class Compra {
+        DireccionEnvio
+        FechaCompra
+        PrecioTotal
+        TipoMetodoPago
+    }
+    class Alquiler {
+        DireccionEnvio
+        FechaInicio
+        FechaFin
+        Periodo
+        PrecioTotal
+        TipoMetodoPago
+    }
+    class Oferta {
+        FechaInicio
+        FechaFinal
+        FechaOferta
+        TipoMetodoPago
+        TipoDirigidaOferta
+    }
+    class Reparacion {
+        FechaEntrega
+        FechaRecogida
+        PrecioTotal
+        TipoMetodoPago
+    }
 
-### 4.3. Añada los miembros de su equipo al repo.
-- Invite al Equipo que ha creado a su repositorio con el Role **Write**: [Invitar a un equipo](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/managing-repository-settings/managing-teams-and-people-with-access-to-your-repository#inviting-a-team-or-person)
-
-
-
-
-# Instructions to use this template.
-
-## 1. Create the organisation
-
-Create your team's organisation with the name **ISII-2526-GrupoI-Team** where Team is the name of your team:
-
-- Follow the instructions available at 
-[Create an organisation](https://docs.github.com/en/organizations/collaborating-with-groups-in-organizations/creating-a-new-organization-from-scratch).
-
-- Establish that this organisation **belongs to your personal account**
-
-
-**1.1 Add a team to your organisation**
-
-Follow the instructions to create the team [Creating an organisation team](https://docs.github.com/en/organizations/organizing-members-into-teams/creating-a-team)
-
-**1.2 Add members to your organisation team**
-
-Follow the instructions to add members [Adding organisation members to a team](https://docs.github.com/en/organizations/organizing-members-into-teams/adding-organization-members-to-a-team)
-
-## 2. Create the Project
-
-Create your project with the name ISII2526TeamName using the template available at: [Template](https://github.com/orgs/Ingenieria-del-Software-II-ESIIAB/projects/14/views/1)
-
-- WARNING: the project name CANNOT CONTAIN SPACES OR NON-ALPHABETICAL CHARACTERS
-- Establish that **the owner is the organisation you have just created.**
-- Establish the visibility of the project as **public**. [set visibility](https://docs.github.com/en/issues/planning-and-tracking-with-projects/managing-your-project/managing-visibility-of-your-projects#changing-project-visibility)
-
-## 3. Create the repository
-
-Create your team's repository with the name **ISII2526TeamName**, using this template: [Template](https://github.com/Ingenieria-del-Software-II-ESIIAB/SEII-IPO-template).
-
-- Follow the instructions available at:  
-[Create a repository from a template](https://docs.github.com/es/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template#creating-a-repository-from-a-template).
-- Establish that **the owner is the organisation you have just created.**
-- Establish that **Visibility is Public.**
-- Link the repo with the project you have just created [Adding your project to a repository](https://docs.github.com/en/issues/planning-and-tracking-with-projects/managing-your-project/adding-your-project-to-a-repository)
-
-## 4. Configure your team's repository.
-
-### 4.1. In the development branch, modify the `info.yml` file.
-
-```yaml
-project:
-  name: 'ISII-2526-GrupoX-Team'
-  owner: 'GrupoX'
-  teamId: 'Team'
-  identities: {}
-  notifications:
-    email: 'member1@alu.uclm.es,member2@alu.uclm.es,member3@alu.uclm.es,member4@alu.uclm.es'
-  members:
-    member1:
-      name: 'Name1'
-      surname: 'Surname1' 
-      githubUsername: 'Name1gitUserName1'
-    member2:
-      name: 'Name2'
-      surname: 'Surname2' 
-      githubUsername: 'Name1gitUserName2'
-    member3:
-      name: 'Name3'
-      surname: 'Surname3' 
-      githubUsername: 'Name1gitUserName3'
-    member4:
-      name: 'Name4'
-      surname: 'Surname4' 
-      githubUsername: 'Name1gitUserName4'
+    Fabricante "1" --> "*" Herramienta
+    ApplicationUser "1" --> "*" Compra
+    ApplicationUser "1" --> "*" Alquiler
+    ApplicationUser "1" --> "*" Oferta
+    ApplicationUser "1" --> "*" Reparacion
+    Compra "1" --> "*" CompraItem
+    Alquiler "1" --> "*" AlquilarItem
+    Oferta "1" --> "*" OfertaItem
+    Reparacion "1" --> "*" ReparacionItem
+    CompraItem "*" --> "1" Herramienta
+    AlquilarItem "*" --> "1" Herramienta
+    OfertaItem "*" --> "1" Herramienta
+    ReparacionItem "*" --> "1" Herramienta
 ```
 
-- Where GroupX must be GroupI, and Team is the name of the team
-    > For example, the team ‘TheLeaders’ registered in GroupI would be:
-    >```yaml
-    >name: 'ISII-2526-GrupoI-TheLeaders'
-    >owner: 'GroupI'
-    >teamId: 'TheLeaders'
-    >```
-- Replace the data for each memberN with that of the actual member.
-- If the number of members is 3, delete member4 from the `members` section.
-- Modify the `notifications:email` string so that it only contains the @alu.uclm.es email addresses of all members, separated by commas and without spaces.
+Each operation is linked to its tools through an item entity with a composite key (`OperationId`, `HerramientaId`). The item stores data specific to that line: quantity, price, discount percentage or repair description.
 
-### 4.2. Link the project to the course audited by Bluejay
-- Create the **main** branch using development as the source [How to create a branch](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-and-deleting-branches-within-your-repository#creating-a-branch-via-the-branches-overview)
-- Go to [join.bluejay.governify.io](https://join.bluejay.governify.io).
-- Add the GitHub URL of **your repository**. For instance, the URL of this repo is "https://github.com/Ingenieria-del-Software-II-ESIIAB/SEII-IPO-template"
-- Click **CHECK**. If you get an error, check the [syntax](https://www.yamllint.com/) of the info.yml.
-- **Select the course** you want to join (UCLM-ISII-2526) and specify the password your teacher will give you.
-- Click **JOIN**.
-- If you encounter any other problems when configuring Bluejay, the support team is available on a dedicated Gitter channel (https://app.gitter.im/#/room/!VTAnLfNgxrEdydQgWd:gitter.im).
+> Domain entities are named in Spanish, as required by the course.
 
+---
 
-### 4.3. Add your team to the repo.
+## 📁 Project Structure
 
-Invite the Team you have created with the Role **Write**:[Inviting a team](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/managing-repository-settings/managing-teams-and-people-with-access-to-your-repository#inviting-a-team-or-person)
+```
+├── .github/workflows/        # CI pipelines
+├── req/                      # Requirements and design documents
+├── src/
+│   ├── AppForSEII2526.API/   # REST API
+│   │   ├── Controllers/
+│   │   ├── Data/             # DbContext and seed data
+│   │   ├── DTOs/             # Data transfer objects per use case
+│   │   ├── Migrations/
+│   │   └── Models/           # Domain entities
+│   ├── AppForSEII2526.Web/   # Blazor web frontend
+│   │   └── Components/Pages/ # Alquiler, Compra, Oferta, Reparacion
+│   └── AppForSEII2526.Maui/  # .NET MAUI Blazor Hybrid client
+├── test/                     # Automated tests
+└── AppForSEII2526.sln
+```
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
+- Visual Studio 2022 (workloads: *ASP.NET and web development*; add *.NET MAUI* for the mobile client)
+- SQL Server LocalDB (installed with Visual Studio), or use SQLite
+
+### Run locally
+
+```bash
+git clone https://github.com/ivangomezr/tool-store-management.git
+cd tool-store-management
+git checkout development
+```
+
+1. Open `AppForSEII2526.sln` in Visual Studio.
+2. Check the `DefaultConnection` connection string in `src/AppForSEII2526.API/appsettings.json`.
+3. Set **multiple startup projects**: `AppForSEII2526.API` + `AppForSEII2526.Web`.
+4. Press **F5**. Migrations are applied automatically on startup.
+
+To use an in-memory SQLite database instead of LocalDB:
+
+```powershell
+$env:DBConnection2Use = "SQLite"
+dotnet run --project src/AppForSEII2526.API
+```
+
+### Run the tests
+
+```bash
+dotnet test
+```
+
+---
+
+## 📖 API Documentation
+
+In the `Development` environment, Swagger UI is available at:
+
+```
+https://localhost:<port>/swagger
+```
+
+The OpenAPI specification is also stored in `src/AppForSEII2526.API/OpenAPIs/swagger.json`.
+
+---
+
+## 🔄 Development Methodology
+
+The project followed **Scrum** across several sprints:
+
+- Product backlog and sprint planning on **GitHub Projects**.
+- One **issue per task**, each worked on its own branch (`<issue-number>-<description>`) and merged into `development` through **pull requests** with code review.
+- Each team member owned one use case end-to-end (API, UI and tests), plus the shared catalogue and authentication.
+- Team activity was monitored by the course's **Bluejay** governance platform (commit, issue and PR metrics).
+
+---
+
+## 👥 Team
+
+Developed by team **TheHookahMasters** (Group A):
+
+| Member | GitHub |
+|---|---|
+| Iván Gómez | [@ivangomezr](https://github.com/ivangomezr) |
+| _Teammate 2_ | _@username_ |
+| _Teammate 3_ | _@username_ |
+| _Teammate 4_ | _@username_ |
+
+Project template provided by the Software Engineering II teaching staff at **ESIIAB – UCLM** ([SEII-SSDD-IPO-template](https://github.com/Ingenieria-del-Software-II-ESIIAB/SEII-SSDD-IPO-template)).
+
+---
+
+## 📄 License
+
+This project is licensed under the **GNU General Public License v3.0**. See [LICENSE](LICENSE) for details.
