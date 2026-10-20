@@ -262,9 +262,9 @@ Developed by team **TheHookahMasters** (Group A):
 | Member | GitHub |
 |---|---|
 | Iván Gómez | [@ivangomezr](https://github.com/ivangomezr) |
-| _Teammate 2_ | _@username_ |
-| _Teammate 3_ | _@username_ |
-| _Teammate 4_ | _@username_ |
+| Alejandro Navarrete | [@AlejandroNvarrete](https://github.com/AlejandroNvarrete) |
+| Sergio Requena | [@SergioReque](https://github.com/SergioReque) |
+| José Enrique Ortiz | [@kikolonx](https://github.com/kikolonx) |
 
 Project template provided by the Software Engineering II teaching staff at **ESIIAB – UCLM** ([SEII-SSDD-IPO-template](https://github.com/Ingenieria-del-Software-II-ESIIAB/SEII-SSDD-IPO-template)).
 
