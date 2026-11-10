@@ -1,5 +1,17 @@
 # 🛠️ Tool Store Management
 
+![C#](https://img.shields.io/badge/C%23-512BD4?logo=dotnet&logoColor=white)
+![.NET 8](https://img.shields.io/badge/.NET_8-512BD4?logo=dotnet&logoColor=white)
+![ASP.NET Core](https://img.shields.io/badge/ASP.NET_Core-512BD4?logo=dotnet&logoColor=white)
+![Blazor](https://img.shields.io/badge/Blazor-512BD4?logo=blazor&logoColor=white)
+![.NET MAUI](https://img.shields.io/badge/.NET_MAUI-512BD4?logo=dotnet&logoColor=white)
+![EF Core](https://img.shields.io/badge/EF_Core-512BD4?logo=dotnet&logoColor=white)
+![SQL Server](https://img.shields.io/badge/SQL_Server-CC2927)
+![SQLite](https://img.shields.io/badge/SQLite-003B57?logo=sqlite&logoColor=white)
+![Swagger](https://img.shields.io/badge/Swagger-85EA2D?logo=swagger&logoColor=black)
+![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?logo=githubactions&logoColor=white)
+![Scrum](https://img.shields.io/badge/Scrum-6DB33F)
+
 A full-stack .NET application for managing a tool store. Customers can **buy**, **rent** and **send tools for repair**, and the store can publish **discount offers** on its catalogue.
 
 > 🎓 **Academic team project.** Built by a team of four students for **Software Engineering II** (*Ingeniería del Software II*), 3rd year of the **Bachelor's Degree in Computer Engineering** (*Grado en Ingeniería Informática*) at the **University of Castilla-La Mancha (UCLM)**, academic year 2025/2026.
@@ -10,25 +22,25 @@ A full-stack .NET application for managing a tool store. Customers can **buy**, 
 
 ---
 
-## 📋 Table of Contents
+## 📸 Screenshots
 
-- [Overview](#-overview)
-- [Features](#-features)
-- [Tech Stack](#-tech-stack)
-- [Architecture](#-architecture)
-- [Domain Model](#-domain-model)
-- [Project Structure](#-project-structure)
-- [Getting Started](#-getting-started)
-- [API Documentation](#-api-documentation)
-- [Development Methodology](#-development-methodology)
-- [Team](#-team)
-- [License](#-license)
+| Main page | API documentation |
+|---|---|
+| ![Main page](screenshots/home.png) | ![Swagger](screenshots/swagger.png) |
+
+| Purchases | Create Purchase |
+|---|---|
+| ![Purchases](screenshots/purchases.png) | ![Create purchase](screenshots/create-purchase.png) |
+
+| Offers | Create offers |
+|---|---|
+| ![Offers](screenshots/offers.png) | ![Create offer](screenshots/create-offer.png) |
 
 ---
 
 ## 🔎 Overview
 
-The system models a tool shop with a catalogue of tools, each linked to a manufacturer. Registered users go through four business processes (use cases), and each one follows the same flow:
+The system models a tool shop with a catalogue of tools, each linked to a manufacturer. The application is organized around four main business processes (use cases), and each one follows the same flow:
 
 1. **Select** tools from the catalogue (with filters).
 2. **Create** the operation: fill in the details, choose a payment method and confirm.
@@ -47,9 +59,19 @@ Each use case was designed and implemented end-to-end, from the REST API to the 
 | 🏷️ **Offers** (*Oferta*) | Create time-limited discount offers on a set of tools (a percentage per tool), aimed at members or customers. |
 | 🔧 **Repair** (*Reparación*) | Send tools for repair, with drop-off and pick-up dates, a description of the problem and a price per item. |
 | 🏭 **Catalogue** | Tools (name, material, price, repair time) and their manufacturers. |
-| 🔐 **Authentication** | User registration, login and account management with ASP.NET Core Identity (including 2FA support). |
+| 🔐 **Authentication (incomplete)** | Login and registration pages are present in the Web project, but the authentication workflow is not fully implemented or operational. See [Authentication status](#authentication-status). |
 
 Available payment methods: **credit card**, **PayPal** and **cash**.
+
+### Authentication status
+
+Authentication is an **incomplete feature** in the current state of the project.
+
+- The login page is available, but a complete, working login flow has not been implemented.
+- The registration page previously produced an error when opened. This issue was partially fixed, and the page can now be displayed.
+- The registration service itself is still not operational. Email delivery and account confirmation are not implemented as a working service, so users cannot complete the intended registration and confirmation process.
+
+Therefore, the Login and Register pages should be considered unfinished interfaces, not functional authentication features. The project should not be used with the expectation that users can register and log in successfully.
 
 ---
 
@@ -78,7 +100,7 @@ Available payment methods: **credit card**, **PayPal** and **cash**.
 
 ## 🏗️ Architecture
 
-```
+```text
 ┌──────────────────────┐      ┌──────────────────────┐
 │  AppForSEII2526.Web  │      │ AppForSEII2526.Maui  │
 │   (Blazor Web App)   │      │ (Blazor Hybrid app)  │
@@ -177,7 +199,7 @@ Each operation is linked to its tools through an item entity with a composite ke
 
 ## 📁 Project Structure
 
-```
+```text
 ├── .github/workflows/        # CI pipelines
 ├── req/                      # Requirements and design documents
 ├── src/
@@ -236,11 +258,37 @@ dotnet test
 
 In the `Development` environment, Swagger UI is available at:
 
-```
+```text
 https://localhost:<port>/swagger
 ```
 
 The OpenAPI specification is also stored in `src/AppForSEII2526.API/OpenAPIs/swagger.json`.
+
+---
+
+## 📸 Screenshots
+
+Screenshots are stored in the `screenshots/` directory and displayed in the same side-by-side table layout used in the [opel-cars-jpa](https://github.com/ivangomezr/opel-cars-jpa) repository.
+
+| Main page | Tool catalogue |
+|---|---|
+| ![Main page](screenshots/home.png) | ![Tool catalogue](screenshots/catalogue.png) |
+
+| Purchase workflow | Rental workflow |
+|---|---|
+| ![Purchase workflow](screenshots/purchase.png) | ![Rental workflow](screenshots/rental.png) |
+
+| Repair request | Promotional offers |
+|---|---|
+| ![Repair request](screenshots/repair.png) | ![Promotional offers](screenshots/offers.png) |
+
+| API documentation | Login and registration interface |
+|---|---|
+| ![Swagger API documentation](screenshots/swagger.png) | ![Login and registration pages](screenshots/login-register.png) |
+
+Add the corresponding `.png` files to the `screenshots/` directory using these exact filenames. The login and registration screenshot documents the available interface only; it does not imply that authentication is functional.
+
+Use screenshots captured from the running project at a consistent viewport size. Hide personal information, credentials, tokens, connection strings and real customer data.
 
 ---
 
