@@ -14,6 +14,12 @@
 
 A full-stack .NET application for managing a tool store. Customers can **buy**, **rent** and **send tools for repair**, and the store can publish **discount offers** on its catalogue.
 
+The system models a tool shop with a catalogue of tools, each linked to a manufacturer. The application is organized around four main business processes (use cases), and each one follows the same flow:
+
+Tool Store Management is designed to manage the main processes of a tool shop. Users can browse the tool catalogue and create different types of operations. The application is divided into a REST API, a Blazor web client and a .NET MAUI Blazor Hybrid client.
+
+The project was developed as a team assignment, following the software engineering practices covered in the course: requirements analysis, domain modelling, iterative development, version control, automated testing and collaborative work.
+
 > **Academic project** — Developed for *Software Engineering II (Ingeniería del Software II)*, third year of the Bachelor's Degree in Computer Engineering at the **University of Castilla-La Mancha (UCLM)**, School of Computer Engineering (Albacete, Spain), during the 2025–2026 academic year.
 
 ---
@@ -31,25 +37,6 @@ A full-stack .NET application for managing a tool store. Customers can **buy**, 
 | Offers | Create offers |
 |---|---|
 | ![Offers](screenshots/offers.png) | ![Create offer](screenshots/create-offer.png) |
-
-- [Overview](#overview)
-- [Main features](#main-features)
-- [Technology stack](#technology-stack)
-- [Architecture](#architecture)
-- [Project structure](#project-structure)
-- [Getting started](#getting-started)
-- [Database configuration](#database-configuration)
-- [Running the tests](#running-the-tests)
-- [Authentication status](#authentication-status)
-- [Screenshots](#screenshots)
-- [Development workflow](#development-workflow)
-- [Team](#team)
-
-The system models a tool shop with a catalogue of tools, each linked to a manufacturer. The application is organized around four main business processes (use cases), and each one follows the same flow:
-
-Tool Store Management is designed to manage the main processes of a tool shop. Users can browse the tool catalogue and create different types of operations. The application is divided into a REST API, a Blazor web client and a .NET MAUI Blazor Hybrid client.
-
-The project was developed as a team assignment, following the software engineering practices covered in the course: requirements analysis, domain modelling, iterative development, version control, automated testing and collaborative work.
 
 ## Main features
 
