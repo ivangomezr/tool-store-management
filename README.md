@@ -1,4 +1,4 @@
-# 🛠️ Tool Store Management
+# Tool Store Management
 
 ![C#](https://img.shields.io/badge/C%23-512BD4?logo=dotnet&logoColor=white)
 ![.NET 8](https://img.shields.io/badge/.NET_8-512BD4?logo=dotnet&logoColor=white)
@@ -14,11 +14,7 @@
 
 A full-stack .NET application for managing a tool store. Customers can **buy**, **rent** and **send tools for repair**, and the store can publish **discount offers** on its catalogue.
 
-> 🎓 **Academic team project.** Built by a team of four students for **Software Engineering II** (*Ingeniería del Software II*), 3rd year of the **Bachelor's Degree in Computer Engineering** (*Grado en Ingeniería Informática*) at the **University of Castilla-La Mancha (UCLM)**, academic year 2025/2026.
->
-> 📦 Original repository: <https://github.com/ISII-2526-GrupoA-TheHookahMasters/ISII2526TheHookahMasterss>
->
-> This repository is a copy of the original, kept for portfolio purposes. The full commit history is preserved on the `development` branch.
+> **Academic project** — Developed for *Software Engineering II (Ingeniería del Software II)*, third year of the Bachelor's Degree in Computer Engineering at the **University of Castilla-La Mancha (UCLM)**, School of Computer Engineering (Albacete, Spain), during the 2025–2026 academic year.
 
 ---
 
@@ -36,23 +32,28 @@ A full-stack .NET application for managing a tool store. Customers can **buy**, 
 |---|---|
 | ![Offers](screenshots/offers.png) | ![Create offer](screenshots/create-offer.png) |
 
----
-
-## 🔎 Overview
+- [Overview](#overview)
+- [Main features](#main-features)
+- [Technology stack](#technology-stack)
+- [Architecture](#architecture)
+- [Project structure](#project-structure)
+- [Getting started](#getting-started)
+- [Database configuration](#database-configuration)
+- [Running the tests](#running-the-tests)
+- [Authentication status](#authentication-status)
+- [Screenshots](#screenshots)
+- [Development workflow](#development-workflow)
+- [Team](#team)
 
 The system models a tool shop with a catalogue of tools, each linked to a manufacturer. The application is organized around four main business processes (use cases), and each one follows the same flow:
 
-1. **Select** tools from the catalogue (with filters).
-2. **Create** the operation: fill in the details, choose a payment method and confirm.
-3. **View the details** of the operation they just created.
+Tool Store Management is designed to manage the main processes of a tool shop. Users can browse the tool catalogue and create different types of operations. The application is divided into a REST API, a Blazor web client and a .NET MAUI Blazor Hybrid client.
 
-Each use case was designed and implemented end-to-end, from the REST API to the Blazor UI, along with its tests.
+The project was developed as a team assignment, following the software engineering practices covered in the course: requirements analysis, domain modelling, iterative development, version control, automated testing and collaborative work.
 
----
+## Main features
 
-## ✨ Features
-
-| Use case | Description |
+| Area | Description |
 |---|---|
 | 🛒 **Purchase** (*Compra*) | Buy one or more tools, with quantities, a shipping address and a payment method. |
 | 📅 **Rental** (*Alquiler*) | Rent tools for a date range. The rental period and total price are calculated from the start and end dates. |
@@ -75,19 +76,21 @@ Therefore, the Login and Register pages should be considered unfinished interfac
 
 ---
 
-## 🧰 Tech Stack
+## Technology stack
 
 **Backend**
-- C# / .NET 8
+- C# and .NET 8
 - ASP.NET Core Web API
-- Entity Framework Core 8 (code-first, migrations)
-- SQL Server (LocalDB) · SQLite (in-memory, for testing) · Azure SQL
-- ASP.NET Core Identity (with roles)
-- Swagger / OpenAPI (Swashbuckle) · NSwag (client generation)
+- Entity Framework Core 8
+- SQL Server / LocalDB
+- SQLite (in-memory database option)
+- ASP.NET Core Identity
+- Swagger / OpenAPI
 
 **Frontend**
-- Blazor Web App (Razor components)
-- .NET MAUI Blazor Hybrid (cross-platform client: Android, iOS, macOS, Windows)
+- Blazor Web App
+- .NET MAUI Blazor Hybrid
+- Razor components
 - Bootstrap
 
 **Tooling and process**
@@ -120,78 +123,14 @@ Therefore, the Login and Register pages should be considered unfinished interfac
               └──────────────────────┘
 ```
 
-- **API**: REST controllers per use case (`CompraController`, `AlquilarController`, `OfertaController`, `ReparacionController`, `HerramientaController`, `FabricanteController`). DTOs separate the API contract from the domain entities.
-- **Web**: Blazor pages per use case (`Select…` → `Create…` → `Detail…`). State containers keep the user's selection across pages.
-- **The database provider** is chosen at runtime through the `DBConnection2Use` environment variable (`SQLite`, `AzureSQL`, or LocalDB by default).
+The API is organised around the main business areas, with controllers for purchases, rentals, offers, repairs, tools and manufacturers. Data Transfer Objects (DTOs) define the data exchanged between the clients and the API.
 
----
+The database provider can be selected through the `DBConnection2Use` environment variable:
+- `SQLite`: in-memory SQLite database.
+- `AzureSQL`: Azure SQL using the `AzureSQL` environment variable as the connection string.
+- Any other value or an unset variable: SQL Server LocalDB using the configured `DefaultConnection`.
 
-## 🗂️ Domain Model
-
-```mermaid
-classDiagram
-    direction LR
-    class ApplicationUser {
-        Nombre
-        Apellido
-        Telefono
-        CorreoElectronico
-    }
-    class Fabricante {
-        Id
-        Nombre
-    }
-    class Herramienta {
-        Id
-        Nombre
-        Material
-        Precio
-        TiempoReparacion
-    }
-    class Compra {
-        DireccionEnvio
-        FechaCompra
-        PrecioTotal
-        TipoMetodoPago
-    }
-    class Alquiler {
-        DireccionEnvio
-        FechaInicio
-        FechaFin
-        Periodo
-        PrecioTotal
-        TipoMetodoPago
-    }
-    class Oferta {
-        FechaInicio
-        FechaFinal
-        FechaOferta
-        TipoMetodoPago
-        TipoDirigidaOferta
-    }
-    class Reparacion {
-        FechaEntrega
-        FechaRecogida
-        PrecioTotal
-        TipoMetodoPago
-    }
-
-    Fabricante "1" --> "*" Herramienta
-    ApplicationUser "1" --> "*" Compra
-    ApplicationUser "1" --> "*" Alquiler
-    ApplicationUser "1" --> "*" Oferta
-    ApplicationUser "1" --> "*" Reparacion
-    Compra "1" --> "*" CompraItem
-    Alquiler "1" --> "*" AlquilarItem
-    Oferta "1" --> "*" OfertaItem
-    Reparacion "1" --> "*" ReparacionItem
-    CompraItem "*" --> "1" Herramienta
-    AlquilarItem "*" --> "1" Herramienta
-    OfertaItem "*" --> "1" Herramienta
-    ReparacionItem "*" --> "1" Herramienta
-```
-
-Each operation is linked to its tools through an item entity with a composite key (`OperationId`, `HerramientaId`). The item stores data specific to that line: quantity, price, discount percentage or repair description.
+## Project structure
 
 > Domain entities are named in Spanish, as required by the course.
 
@@ -203,30 +142,31 @@ Each operation is linked to its tools through an item entity with a composite ke
 ├── .github/workflows/        # CI pipelines
 ├── req/                      # Requirements and design documents
 ├── src/
-│   ├── AppForSEII2526.API/   # REST API
+│   ├── AppForSEII2526.API/         # ASP.NET Core REST API
 │   │   ├── Controllers/
-│   │   ├── Data/             # DbContext and seed data
-│   │   ├── DTOs/             # Data transfer objects per use case
+│   │   ├── Data/
+│   │   ├── DTOs/
 │   │   ├── Migrations/
-│   │   └── Models/           # Domain entities
-│   ├── AppForSEII2526.Web/   # Blazor web frontend
-│   │   └── Components/Pages/ # Alquiler, Compra, Oferta, Reparacion
-│   └── AppForSEII2526.Maui/  # .NET MAUI Blazor Hybrid client
-├── test/                     # Automated tests
+│   │   └── Models/
+│   ├── AppForSEII2526.Web/         # Blazor web application
+│   │   └── Components/
+│   └── AppForSEII2526.Maui/       # .NET MAUI Blazor Hybrid application
+├── test/
+│   ├── AppForSEII2526.UT/          # Unit tests
+│   └── AppForSEII2526.UIT/         # UI tests
 └── AppForSEII2526.sln
 ```
 
----
-
-## 🚀 Getting Started
+## Getting started
 
 ### Prerequisites
 
-- [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
-- Visual Studio 2022 (workloads: *ASP.NET and web development*; add *.NET MAUI* for the mobile client)
-- SQL Server LocalDB (installed with Visual Studio), or use SQLite
+- .NET 8 SDK
+- Visual Studio 2022 with the **ASP.NET and web development** workload
+- SQL Server LocalDB (usually installed with Visual Studio), or configure the API to use SQLite
+- .NET MAUI workload if you want to run the MAUI client
 
-### Run locally
+### Clone the repository
 
 ```bash
 git clone https://github.com/ivangomezr/tool-store-management.git
@@ -234,78 +174,81 @@ cd tool-store-management
 git checkout development
 ```
 
-1. Open `AppForSEII2526.sln` in Visual Studio.
-2. Check the `DefaultConnection` connection string in `src/AppForSEII2526.API/appsettings.json`.
-3. Set **multiple startup projects**: `AppForSEII2526.API` + `AppForSEII2526.Web`.
-4. Press **F5**. Migrations are applied automatically on startup.
+### Configure and run
 
-To use an in-memory SQLite database instead of LocalDB:
+1. Open `AppForSEII2526.sln` in Visual Studio.
+2. Check the `DefaultConnection` connection strings in the API and Web project configuration files.
+3. Configure the API base URL in `src/AppForSEII2526.Web/appsettings.json`, under `AppForHerramientas_API`, so that it matches the URL and port used by the API launch profile.
+4. Set `AppForSEII2526.API` and `AppForSEII2526.Web` as startup projects.
+5. Start the solution.
+
+The API applies Entity Framework Core migrations at startup when using SQL Server. When using the SQLite option, the API creates the in-memory database on startup.
+
+> **Note:** The API and Web projects must use matching connection settings and the Web project's API URL must point to the actual address where the API is listening. These values can differ between Visual Studio launch profiles and machines.
+
+## Database configuration
+
+The default configuration uses SQL Server LocalDB. To select the in-memory SQLite provider when starting the API from PowerShell:
 
 ```powershell
 $env:DBConnection2Use = "SQLite"
-dotnet run --project src/AppForSEII2526.API
+dotnet run --project src/AppForSEII2526.API/AppForSEII2526.API.csproj
 ```
 
-### Run the tests
+For Azure SQL, set `DBConnection2Use` to `AzureSQL` and provide the connection string through the `AzureSQL` environment variable.
+
+Do not commit personal credentials or production connection strings to the repository.
+
+## Running the tests
+
+Run the solution's automated tests from the repository root:
 
 ```bash
 dotnet test
 ```
 
----
+The solution contains separate unit-test and UI-test projects under `test/`.
 
-## 📖 API Documentation
+## Authentication status
 
-In the `Development` environment, Swagger UI is available at:
+The Web application includes ASP.NET Core Identity pages for login and registration.
 
 ```text
 https://localhost:<port>/swagger
 ```
 
-The OpenAPI specification is also stored in `src/AppForSEII2526.API/OpenAPIs/swagger.json`.
-
----
-
-## 📸 Screenshots
-
-Screenshots are stored in the `screenshots/` directory and displayed in the same side-by-side table layout used in the [opel-cars-jpa](https://github.com/ivangomezr/opel-cars-jpa) repository.
-
-| Main page | Tool catalogue |
-|---|---|
-| ![Main page](screenshots/home.png) | ![Tool catalogue](screenshots/catalogue.png) |
-
-| Purchase workflow | Rental workflow |
-|---|---|
-| ![Purchase workflow](screenshots/purchase.png) | ![Rental workflow](screenshots/rental.png) |
-
-| Repair request | Promotional offers |
-|---|---|
-| ![Repair request](screenshots/repair.png) | ![Promotional offers](screenshots/offers.png) |
-
-| API documentation | Login and registration interface |
-|---|---|
-| ![Swagger API documentation](screenshots/swagger.png) | ![Login and registration pages](screenshots/login-register.png) |
-
-Add the corresponding `.png` files to the `screenshots/` directory using these exact filenames. The login and registration screenshot documents the available interface only; it does not imply that authentication is functional.
-
-Use screenshots captured from the running project at a consistent viewport size. Hide personal information, credentials, tokens, connection strings and real customer data.
+Authentication is therefore a known incomplete area of the current project.
 
 ---
 
 ## 🔄 Development Methodology
 
-The project followed **Scrum** across several sprints:
+Suggested screenshots:
 
-- Product backlog and sprint planning on **GitHub Projects**.
-- One **issue per task**, each worked on its own branch (`<issue-number>-<description>`) and merged into `development` through **pull requests** with code review.
-- Each team member owned one use case end-to-end (API, UI and tests), plus the shared catalogue and authentication.
-- Team activity was monitored by the course's **Bluejay** governance platform (commit, issue and PR metrics).
+1. **Main page / dashboard** — the first screen users see when opening the application.
+2. **Tool catalogue** — the list of tools, including filters and relevant product information.
+3. **Purchase workflow** — tool selection and the purchase details/confirmation screen.
+4. **Rental workflow** — rental selection and the date-range form.
+5. **Repair workflow** — repair request form, including the problem description.
+6. **Offers** — offer creation or offer listing, showing discount and validity dates.
+7. **API Swagger UI** — the API endpoints grouped by controller.
+8. **Login and registration pages** — useful to show the implemented interface, but make sure the README's authentication limitation remains clear.
 
----
+Example Markdown to add once the screenshots are available:
 
-## 👥 Team
+```md
+![Tool catalogue](docs/screenshots/tool-catalogue.png)
+```
 
-Developed by team **TheHookahMasters** (Group A):
+Prefer screenshots at a consistent viewport size. Crop out personal information, credentials, tokens, connection strings and any real customer data. A good set of four to six representative images is usually enough; the catalogue, main page, one complete workflow and Swagger are the best starting points.
+
+## Development workflow
+
+The project was developed collaboratively using an iterative workflow based on Scrum practices. Work was organised through issues, a project board, feature branches and pull requests. GitHub Actions was used for continuous integration.
+
+## Team
+
+Developed by **TheHookahMasters (Group A)** for Software Engineering II at UCLM:
 
 | Member | GitHub |
 |---|---|
@@ -314,10 +257,6 @@ Developed by team **TheHookahMasters** (Group A):
 | Sergio Requena | [@SergioReque](https://github.com/SergioReque) |
 | José Enrique Ortiz | [@kikolonx](https://github.com/kikolonx) |
 
-Project template provided by the Software Engineering II teaching staff at **ESIIAB – UCLM** ([SEII-SSDD-IPO-template](https://github.com/Ingenieria-del-Software-II-ESIIAB/SEII-SSDD-IPO-template)).
-
 ---
 
-## 📄 License
-
-This project is licensed under the **GNU General Public License v3.0**. See [LICENSE](LICENSE) for details.
+*This repository is an academic project and is not intended to be presented as a production-ready commercial application.*
