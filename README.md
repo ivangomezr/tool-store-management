@@ -1,10 +1,36 @@
 # Tool Store Management
 
-A full-stack application for managing the operations of a tool store. The system provides a catalogue of tools and supports purchases, rentals, repair requests and promotional offers.
+![C#](https://img.shields.io/badge/C%23-512BD4?logo=dotnet&logoColor=white)
+![.NET 8](https://img.shields.io/badge/.NET_8-512BD4?logo=dotnet&logoColor=white)
+![ASP.NET Core](https://img.shields.io/badge/ASP.NET_Core-512BD4?logo=dotnet&logoColor=white)
+![Blazor](https://img.shields.io/badge/Blazor-512BD4?logo=blazor&logoColor=white)
+![.NET MAUI](https://img.shields.io/badge/.NET_MAUI-512BD4?logo=dotnet&logoColor=white)
+![EF Core](https://img.shields.io/badge/EF_Core-512BD4?logo=dotnet&logoColor=white)
+![SQL Server](https://img.shields.io/badge/SQL_Server-CC2927)
+![SQLite](https://img.shields.io/badge/SQLite-003B57?logo=sqlite&logoColor=white)
+![Swagger](https://img.shields.io/badge/Swagger-85EA2D?logo=swagger&logoColor=black)
+![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?logo=githubactions&logoColor=white)
+![Scrum](https://img.shields.io/badge/Scrum-6DB33F)
+
+A full-stack .NET application for managing a tool store. Customers can **buy**, **rent** and **send tools for repair**, and the store can publish **discount offers** on its catalogue.
 
 > **Academic project** — Developed for *Software Engineering II (Ingeniería del Software II)*, third year of the Bachelor's Degree in Computer Engineering at the **University of Castilla-La Mancha (UCLM)**, School of Computer Engineering (Albacete, Spain), during the 2025–2026 academic year.
 
-## Table of contents
+---
+
+## 📸 Screenshots
+
+| Main page | API documentation |
+|---|---|
+| ![Main page](screenshots/home.png) | ![Swagger](screenshots/swagger.png) |
+
+| Purchases | Create Purchase |
+|---|---|
+| ![Purchases](screenshots/purchases.png) | ![Create purchase](screenshots/create-purchase.png) |
+
+| Offers | Create offers |
+|---|---|
+| ![Offers](screenshots/offers.png) | ![Create offer](screenshots/create-offer.png) |
 
 - [Overview](#overview)
 - [Main features](#main-features)
@@ -19,7 +45,7 @@ A full-stack application for managing the operations of a tool store. The system
 - [Development workflow](#development-workflow)
 - [Team](#team)
 
-## Overview
+The system models a tool shop with a catalogue of tools, each linked to a manufacturer. The application is organized around four main business processes (use cases), and each one follows the same flow:
 
 Tool Store Management is designed to manage the main processes of a tool shop. Users can browse the tool catalogue and create different types of operations. The application is divided into a REST API, a Blazor web client and a .NET MAUI Blazor Hybrid client.
 
@@ -29,14 +55,26 @@ The project was developed as a team assignment, following the software engineeri
 
 | Area | Description |
 |---|---|
-| **Tool catalogue** | Browse tools and their information, including name, material, price, repair time and manufacturer. |
-| **Purchases** | Select tools and quantities, provide a shipping address and payment method, and review the purchase details. |
-| **Rentals** | Select tools and a rental period. The operation includes start and end dates and a total price. |
-| **Repair requests** | Submit tools for repair, specifying the relevant dates, problem description and price information. |
-| **Promotional offers** | Create offers with a validity period and discounts for selected tools and a target customer group. |
-| **User accounts** | Login and registration interfaces are included through ASP.NET Core Identity. See [Authentication status](#authentication-status) for the current limitations. |
+| 🛒 **Purchase** (*Compra*) | Buy one or more tools, with quantities, a shipping address and a payment method. |
+| 📅 **Rental** (*Alquiler*) | Rent tools for a date range. The rental period and total price are calculated from the start and end dates. |
+| 🏷️ **Offers** (*Oferta*) | Create time-limited discount offers on a set of tools (a percentage per tool), aimed at members or customers. |
+| 🔧 **Repair** (*Reparación*) | Send tools for repair, with drop-off and pick-up dates, a description of the problem and a price per item. |
+| 🏭 **Catalogue** | Tools (name, material, price, repair time) and their manufacturers. |
+| 🔐 **Authentication (incomplete)** | Login and registration pages are present in the Web project, but the authentication workflow is not fully implemented or operational. See [Authentication status](#authentication-status). |
 
-The application models credit card, PayPal and cash as payment method options.
+Available payment methods: **credit card**, **PayPal** and **cash**.
+
+### Authentication status
+
+Authentication is an **incomplete feature** in the current state of the project.
+
+- The login page is available, but a complete, working login flow has not been implemented.
+- The registration page previously produced an error when opened. This issue was partially fixed, and the page can now be displayed.
+- The registration service itself is still not operational. Email delivery and account confirmation are not implemented as a working service, so users cannot complete the intended registration and confirmation process.
+
+Therefore, the Login and Register pages should be considered unfinished interfaces, not functional authentication features. The project should not be used with the expectation that users can register and log in successfully.
+
+---
 
 ## Technology stack
 
@@ -55,38 +93,34 @@ The application models credit card, PayPal and cash as payment method options.
 - Razor components
 - Bootstrap
 
-**Additional tools and libraries**
-- NSwag-generated API client
-- xUnit and Moq for automated tests
-- GitHub Actions for continuous integration
-- GitHub Projects for task and sprint management
+**Tooling and process**
+- Unit and integration tests (`test/` project)
+- GitHub Actions (CI)
+- GitHub Projects (Scrum board, sprints, issues)
+- Git flow with feature branches and pull requests
 
-## Architecture
+---
 
-The solution follows a client–server architecture. The web and MAUI clients communicate with the backend through HTTP using a generated API client. The API contains the business endpoints and uses Entity Framework Core to access the database.
+## 🏗️ Architecture
 
 ```text
-+--------------------------+       +--------------------------+
-|   AppForSEII2526.Web     |       |   AppForSEII2526.Maui    |
-|     Blazor Web App       |       |   Blazor Hybrid client    |
-+------------+-------------+       +-------------+------------+
-             |                                   |
-             +----------------+------------------+
-                              |
-                       HTTP / REST API
-                              |
-                 +------------v-------------+
-                 |     AppForSEII2526.API    |
-                 |       ASP.NET Core       |
-                 | Controllers, DTOs,       |
-                 | domain and data access   |
-                 +------------+-------------+
-                              |
-                         EF Core
-                              |
-                 +------------v-------------+
-                 | SQL Server / SQLite      |
-                 +--------------------------+
+┌──────────────────────┐      ┌──────────────────────┐
+│  AppForSEII2526.Web  │      │ AppForSEII2526.Maui  │
+│   (Blazor Web App)   │      │ (Blazor Hybrid app)  │
+└──────────┬───────────┘      └──────────┬───────────┘
+           │   HTTP / REST (NSwag-generated client)
+           └──────────────┬──────────────┘
+                          ▼
+              ┌──────────────────────┐
+              │  AppForSEII2526.API  │
+              │ ASP.NET Core Web API │
+              │  Controllers · DTOs  │
+              └──────────┬───────────┘
+                         │ EF Core
+                         ▼
+              ┌──────────────────────┐
+              │ SQL Server / SQLite  │
+              └──────────────────────┘
 ```
 
 The API is organised around the main business areas, with controllers for purchases, rentals, offers, repairs, tools and manufacturers. Data Transfer Objects (DTOs) define the data exchanged between the clients and the API.
@@ -98,11 +132,15 @@ The database provider can be selected through the `DBConnection2Use` environment
 
 ## Project structure
 
+> Domain entities are named in Spanish, as required by the course.
+
+---
+
+## 📁 Project Structure
+
 ```text
-.
-├── .github/
-│   └── workflows/                 # GitHub Actions workflows
-├── req/                            # Requirements and design documentation
+├── .github/workflows/        # CI pipelines
+├── req/                      # Requirements and design documents
 ├── src/
 │   ├── AppForSEII2526.API/         # ASP.NET Core REST API
 │   │   ├── Controllers/
@@ -175,13 +213,15 @@ The solution contains separate unit-test and UI-test projects under `test/`.
 
 The Web application includes ASP.NET Core Identity pages for login and registration.
 
-**Current limitation:** the registration page can now be opened, but the email sender / account-confirmation service is not configured as a working email delivery service. Consequently, confirmation emails are not delivered and the complete registration and account-confirmation workflow is **not operational**. The presence of the registration page should not be interpreted as evidence that email-based registration is fully implemented.
+```text
+https://localhost:<port>/swagger
+```
 
 Authentication is therefore a known incomplete area of the current project.
 
-## Screenshots
+---
 
-Screenshots of the running application will make the repository easier to understand. Add the images to `docs/screenshots/` and embed them here as the project evolves.
+## 🔄 Development Methodology
 
 Suggested screenshots:
 
